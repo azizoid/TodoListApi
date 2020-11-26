@@ -3,6 +3,7 @@ import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 
+import { Todo } from "./schemas/todo.schema"
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) { }
@@ -11,7 +12,7 @@ export class TodosController {
   @HttpCode(HttpStatus.CREATED)
   create(
     @Body() createTodoDto: CreateTodoDto
-  ) {
+  ): Promise<Todo> {
     console.log("controller", createTodoDto)
     return this.todosService.create(createTodoDto);
   }
@@ -19,26 +20,22 @@ export class TodosController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
-  findAll() {
-    console.log("findAll")
+  findAll(): Promise<Todo[]> {
     return this.todosService.findAll();
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Todo> {
     return this.todosService.findOne(id);
   }
 
   @Put(':id')
-  @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
     return this.todosService.update(id, updateTodoDto);
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<Todo> {
     return this.todosService.remove(id);
   }
 }

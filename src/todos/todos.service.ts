@@ -1,6 +1,8 @@
-import { Model } from "mongoose"
 import { Injectable } from '@nestjs/common';
+
+import { Model } from "mongoose"
 import { InjectModel } from '@nestjs/mongoose';
+
 import { Todo, TodoDocument } from './schemas/todo.schema';
 
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -23,14 +25,14 @@ export class TodosService {
   }
 
   async findOne(id: string): Promise<Todo> {
-    return this.todoModel.findOne({ '_id': id }).exec();
+    return this.todoModel.findById(id)
   }
 
   async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    return this.todoModel.updateOne({ _id: id }, updateTodoDto)
+    return this.todoModel.findByIdAndUpdate(id, updateTodoDto, { new: true })
   }
 
-  remove(id: string) {
-    return this.todoModel.deleteOne({ _id: id })
+  async remove(id: string): Promise<Todo> {
+    return this.todoModel.findByIdAndRemove(id)
   }
 }

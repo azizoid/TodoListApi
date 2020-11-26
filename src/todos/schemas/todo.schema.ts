@@ -10,9 +10,6 @@ export class Todo {
 
   @Prop()
   checked: boolean;
-
-  @Prop()
-  userId: string;
 }
 
 export const TodoSchema = SchemaFactory.createForClass(Todo);
