@@ -1,4 +1,7 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, Header } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, Header, UseGuards } from '@nestjs/common';
+
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -17,6 +20,7 @@ export class TodosController {
     return this.todosService.create(createTodoDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
